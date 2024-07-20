@@ -1,5 +1,6 @@
 import {create} from 'zustand';
 import {SessionsStore} from './types';
+import {useSessionByUsernameStore} from './sessionByUsernameStore';
 
 export const useSessionStore = create<SessionsStore>(set => ({
   currentUser: null,
@@ -7,5 +8,6 @@ export const useSessionStore = create<SessionsStore>(set => ({
     set({
       currentUser: user,
     });
+    useSessionByUsernameStore.getState().addUser(user);
   },
 }));

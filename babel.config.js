@@ -12,6 +12,7 @@ module.exports = {
           '@constants': './app/constants',
           /* MODULES */
           '@Sessions': './app/modules/sessions',
+          '@Comments': './app/modules/comments',
         },
       },
     ],

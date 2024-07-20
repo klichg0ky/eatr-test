@@ -9,6 +9,13 @@ import React from 'react';
 import {Button, Text, View} from 'react-native';
 
 /* =========================================================================
+ * NAVIGATION
+ * ========================================================================= */
+import {useNavigation} from '@react-navigation/native';
+import {NAVIGATION_NAMES} from '@navigation/navigationNames';
+import {AppStackNavigation} from '@navigation/types';
+
+/* =========================================================================
  * LIBS
  * ========================================================================= */
 import {Controller, useForm} from 'react-hook-form';
@@ -24,10 +31,14 @@ import {FieldInput} from '@ui/FieldInput';
 import {EMAIL_REGEX, LATIN_AND_NUMBERS_REGEX} from '@constants/regex';
 
 /* =========================================================================
+ * MODEL / BUSiNESS LOGIC
+ * ========================================================================= */
+import {useSessionStore, Session} from '@Sessions/model';
+
+/* =========================================================================
  * STYLES
  * ========================================================================= */
 import styles from './styles';
-import {useSessionStore, Session} from '@Sessions/model';
 
 type FormValues = {
   email: string;
@@ -35,6 +46,8 @@ type FormValues = {
 };
 
 export const RegisterScreen: React.FC = () => {
+  const navigation = useNavigation<AppStackNavigation>();
+
   const {
     control,
     handleSubmit,
@@ -46,12 +59,17 @@ export const RegisterScreen: React.FC = () => {
     },
   });
 
+  const openCommentsScreen = () => {
+    navigation.navigate(NAVIGATION_NAMES.CommentsScreen);
+  };
+
   const saveSession = (data: Session) => {
     useSessionStore.getState().setUser(data);
   };
 
   const onSubmit = (data: FormValues) => {
     saveSession(data);
+    openCommentsScreen();
   };
 
   return (
@@ -72,6 +90,7 @@ export const RegisterScreen: React.FC = () => {
           <FieldInput
             fieldName="Email"
             keyboardType="email-address"
+            autoCapitalize="none"
             placeholder="Email"
             onBlur={onBlur}
             onChangeText={onChange}
@@ -101,6 +120,7 @@ export const RegisterScreen: React.FC = () => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            autoCapitalize="none"
           />
         )}
         name="username"
